@@ -1,11 +1,15 @@
 import { useEffect } from "react";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 import HoverLinks from "./HoverLinks";
-import { gsap } from "gsap";
 import "./styles/Navbar.css";
 
-gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
-export let smoother: ScrollSmoother;
+// ✅ register plugins
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+
+// ✅ safer type
+export let smoother: ScrollSmoother | null = null;
 
 const Navbar = () => {
   useEffect(() => {
@@ -22,28 +26,49 @@ const Navbar = () => {
     smoother.scrollTop(0);
     smoother.paused(true);
 
-    let links = document.querySelectorAll(".header ul a");
+    const links = document.querySelectorAll(".header ul a");
+
     links.forEach((elem) => {
-      let element = elem as HTMLAnchorElement;
+      const element = elem as HTMLAnchorElement;
+
       element.addEventListener("click", (e) => {
-        if (window.innerWidth > 1024) {
+        if (window.innerWidth > 1024 && smoother) {
           e.preventDefault();
-          let elem = e.currentTarget as HTMLAnchorElement;
-          let section = elem.getAttribute("data-href");
-          smoother.scrollTo(section, true, "top top");
+          const target = e.currentTarget as HTMLAnchorElement;
+          const section = target.getAttribute("data-href");
+
+          if (section) {
+            smoother.scrollTo(section, true, "top top");
+          }
         }
       });
     });
-    window.addEventListener("resize", () => {
-      ScrollSmoother.refresh(true);
-    });
+
+    // ✅ correct refresh method
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // ✅ cleanup (VERY IMPORTANT)
+    return () => {
+      window.removeEventListener("resize", handleResize);
+
+      if (smoother) {
+        smoother.kill();
+        smoother = null;
+      }
+    };
   }, []);
+
   return (
     <>
       <div className="header">
         <a href="/#" className="navbar-title" data-cursor="disable">
           Logo
         </a>
+
         <a
           href="mailto:example@mail.com"
           className="navbar-connect"
@@ -51,6 +76,7 @@ const Navbar = () => {
         >
           example@mail.com
         </a>
+
         <ul>
           <li>
             <a data-href="#about" href="#about">
