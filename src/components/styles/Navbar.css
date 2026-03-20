@@ -81,3 +81,64 @@
     font-size: 18px;
   }
 }
+/* LOGO BASE */
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* LOGO IMAGE */
+.logo-img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+  border-radius: 50%;
+
+  /* Neon glow */
+  filter: drop-shadow(0 0 8px #a855f7)
+          drop-shadow(0 0 18px #9333ea);
+
+  transition: all 0.4s ease;
+
+  /* Smooth floating animation */
+  animation: floatLogo 3s ease-in-out infinite;
+}
+
+/* 🔥 HOVER EFFECT */
+.logo-img:hover {
+  transform: scale(1.15) rotate(6deg);
+
+  filter: drop-shadow(0 0 15px #c084fc)
+          drop-shadow(0 0 35px #a855f7)
+          drop-shadow(0 0 60px #9333ea);
+}
+
+/* ✨ FLOAT ANIMATION */
+@keyframes floatLogo {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+@keyframes glowPulse {
+  0% {
+    filter: drop-shadow(0 0 6px #a855f7);
+  }
+  50% {
+    filter: drop-shadow(0 0 25px #c084fc);
+  }
+  100% {
+    filter: drop-shadow(0 0 6px #a855f7);
+  }
+}
+
+.logo-img {
+  animation: floatLogo 3s ease-in-out infinite,
+             glowPulse 2s ease-in-out infinite;
+}

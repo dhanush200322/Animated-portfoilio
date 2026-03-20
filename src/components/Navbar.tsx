@@ -65,16 +65,16 @@ const Navbar = () => {
   return (
     <>
       <div className="header">
-        <a href="/#" className="navbar-title" data-cursor="disable">
-          Logo
-        </a>
+       <a href="/#" className="navbar-title logo-container" data-cursor="disable">
+  <img src="/images/logo.png" alt="D Logo" className="logo-img" />
+</a>
 
         <a
-          href="mailto:example@mail.com"
+          href="mailto:ro224313@gmail.com"
           className="navbar-connect"
           data-cursor="disable"
         >
-          example@mail.com
+          ro224313@gmail.com
         </a>
 
         <ul>
